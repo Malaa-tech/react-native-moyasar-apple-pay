@@ -21,13 +21,13 @@
     "moyasar-apple-pay",
     "MoyasarApplePay"
   ],
-  "repository": "https://github.com/WadhahEssam/moyasar-apple-pay",
+  "repository": "https://github.com/Malaa-tech/moyasar-apple-pay",
   "bugs": {
-    "url": "https://github.com/WadhahEssam/moyasar-apple-pay/issues"
+    "url": "https://github.com/Malaa-tech/moyasar-apple-pay/issues"
   },
   "author": "Wadah Esam <wadah-wleed@hotmail.com> (https://github.com/WadhahEssam)",
   "license": "MIT",
-  "homepage": "https://github.com/WadhahEssam/moyasar-apple-pay#readme",
+  "homepage": "https://github.com/Malaa-tech/moyasar-apple-pay#readme",
   "dependencies": {},
   "devDependencies": {
     "@types/react": "^18.0.25",
