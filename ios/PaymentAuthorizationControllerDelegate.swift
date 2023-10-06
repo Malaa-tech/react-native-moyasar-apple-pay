@@ -24,7 +24,7 @@ class PaymentAuthorizationControllerDelegate: NSObject, PKPaymentAuthorizationVi
                 amount: self.moyasarApplePayModule.applePayOptions.amount,
                 currency: self.moyasarApplePayModule.applePayOptions.currency,
                 description: self.moyasarApplePayModule.applePayOptions.description,
-                metadata: ["payment_id": self.moyasarApplePayModule.applePayOptions.paymentID]
+                metadata: self.getMoyasarMetaData()
             )
             let service = ApplePayService()
             try service.authorizePayment(request: moyasarPaymentRequest, token: payment.token) { result in
@@ -50,6 +50,14 @@ class PaymentAuthorizationControllerDelegate: NSObject, PKPaymentAuthorizationVi
         } catch {
             self.closePaymentWithError(errorCode: 404, errorDomain: "PaymentError.moyasar", localizedDescription: "could not verify payment form moyasar", handler: completion)
         }
+    }
+    
+    private func getMoyasarMetaData() -> [String: String] {
+        var metaData: [String: String] = [:];
+        for metaDataItem in self.moyasarApplePayModule.applePayOptions.metaData {
+            metaData[metaDataItem.key] = metaDataItem.value
+        }
+        return metaData;
     }
     
     private func closePaymentWithError(errorCode: Int, errorDomain: String, localizedDescription: String, handler completion: @escaping (PKPaymentAuthorizationResult) -> Void, sendEvent: Bool = true) {

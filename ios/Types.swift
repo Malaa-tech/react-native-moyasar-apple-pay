@@ -61,15 +61,20 @@ struct Summary: Record {
     var itemAmount: Double
 }
 
+struct MoyasarMetaData: Record {
+    @Field
+    var key: String
+    
+    @Field
+    var value: String
+}
+
 struct ApplePayOptions: Record {
     @Field
     var moyasarPublicKey: String
 
     @Field
     var amount: Int
-    
-    @Field
-    var paymentID: String = ""
     
     @Field
     var description: String = "Malaa Technologies"
@@ -100,6 +105,9 @@ struct ApplePayOptions: Record {
     
     @Field
     var summaryItems: [Summary] = []
+    
+    @Field
+    var metaData: [MoyasarMetaData] = []
 }
 
 struct ApplePayButtonOptions: Record {

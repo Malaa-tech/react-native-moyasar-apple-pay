@@ -1,6 +1,6 @@
 # react-native-moyasar-apple-pay
 
-iOS native apple pay implementation & integration with Moyasar SDK
+iOS native apple pay implementation & integration with Moyasar SDK for React Native
 
 # Installation in managed Expo projects
 

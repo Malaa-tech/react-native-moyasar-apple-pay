@@ -15,10 +15,14 @@ export type SummaryItem = {
   itemAmount: number;
 };
 
+export type MetaDataItem = {
+  key: string;
+  value: string;
+};
+
 export type ApplePayOptions = {
   moyasarPublicKey: string;
   amount: number;
-  paymentID?: string;
   description?: string;
   currency?: string;
   merchantIdentifier: string;
@@ -29,6 +33,7 @@ export type ApplePayOptions = {
   countryCode?: string;
   isMerchant3DSEnabled?: boolean;
   summaryItems: SummaryItem[];
+  metaData?: MetaDataItem[];
 };
 
 export type ApplePayButtonExpoViewProps = {

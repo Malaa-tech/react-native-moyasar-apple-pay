@@ -82,7 +82,16 @@ export default function App() {
             isVisaSupported: true,
             isMerchant3DSEnabled: true,
             description: "Malaa Technologies",
-            paymentID: "test-payment-id-sandbox",
+            metaData: [
+              {
+                key: 'payment_id',
+                value: 'test-payment-id-native-button',
+              },
+              {
+                key: 'sequence_id',
+                value: 'test-sequence_id-id-native-button',
+              },
+            ],
             summaryItems: [
               {
                 itemAmount: amount,
@@ -118,8 +127,17 @@ export default function App() {
             isMasterCardSupported: false,
             isVisaSupported: false,
             isMerchant3DSEnabled: true,
+            metaData: [
+              {
+                key: 'payment_id',
+                value: 'test-payment-id-native-button',
+              },
+              {
+                key: 'sequence_id',
+                value: 'test-sequence_id-id-native-button',
+              },
+            ],
             description: "Malaa Technologies",
-            paymentID: "test-payment-id-prod",
             summaryItems: [
               {
                 itemAmount: amount,
@@ -180,6 +198,16 @@ export default function App() {
               itemTitle: "Total",
             },
           ]}
+          metaData={[
+              {
+                key: 'payment_id',
+                value: 'test-payment-id-native-button',
+              },
+              {
+                key: 'sequence_id',
+                value: 'test-sequence_id-id-native-button',
+              },
+          ]}
           countryCode="SA"
           currency="SAR"
           description="Malaa Technologies"
@@ -188,7 +216,6 @@ export default function App() {
           isMasterCardSupported={false}
           isVisaSupported={false}
           isMerchant3DSEnabled={true}
-          paymentID="test-payment-id-native-button"
           onApplePayCompleted={(payload) => {
             console.log("onApplePayCompleted", payload);
           }}

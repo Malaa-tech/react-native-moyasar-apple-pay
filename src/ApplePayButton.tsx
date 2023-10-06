@@ -32,7 +32,7 @@ const ApplePayButton = (props: ApplePayButtonProps) => {
         isVisaSupported: props.isVisaSupported,
         isMasterCardSupported: props.isMasterCardSupported,
         isMerchant3DSEnabled: props.isMerchant3DSEnabled,
-        paymentID: props.paymentID,
+        metaData: props.metaData,
       }).catch((e) => {
         throw new Error(e)
       })
