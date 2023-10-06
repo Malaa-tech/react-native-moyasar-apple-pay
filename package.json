@@ -1,6 +1,6 @@
 {
   "name": "react-native-moyasar-apple-pay",
-  "version": "0.1.0",
+  "version": "0.1.1",
   "description": "iOS native apple pay implementation & integration with Moyasar SDK",
   "main": "build/index.js",
   "types": "build/index.d.ts",
@@ -30,10 +30,10 @@
   "homepage": "https://github.com/Malaa-tech/moyasar-apple-pay#readme",
   "dependencies": {},
   "devDependencies": {
+    "@expo/config-plugins": "7.2.5",
     "@types/react": "^18.0.25",
     "expo-module-scripts": "^3.0.11",
-    "expo-modules-core": "^1.5.11",
-    "@expo/config-plugins": "7.2.5"
+    "expo-modules-core": "^1.5.11"
   },
   "peerDependencies": {
     "expo": "*",
