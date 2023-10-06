@@ -1,11 +1,6 @@
-# moyasar-apple-pay
+# react-native-moyasar-apple-pay
 
 iOS native apple pay implementation & integration with Moyasar SDK
-
-# API documentation
-
-- [Documentation for the main branch](https://github.com/expo/expo/blob/main/docs/pages/versions/unversioned/sdk/moyasar-apple-pay.md)
-- [Documentation for the latest stable release](https://docs.expo.dev/versions/latest/sdk/moyasar-apple-pay/)
 
 # Installation in managed Expo projects
 
@@ -18,7 +13,7 @@ For bare React Native projects, you must ensure that you have [installed and con
 ### Add the package to your npm dependencies
 
 ```
-npm install moyasar-apple-pay
+npm install react-native-moyasar-apple-pay
 ```
 
 ### Configure for iOS
