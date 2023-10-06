@@ -18,6 +18,9 @@
     "ios": {
       "supportsTablet": true,
       "bundleIdentifier": "expo.modules.moyasarapplepay.example"
+      "entitlements": {
+        "com.apple.developer.in-app-payments": [""]
+      }
     },
     "android": {
       "adaptiveIcon": {
