@@ -37,7 +37,7 @@ PODS:
     - hermes-engine/Pre-built (= 0.72.5)
   - hermes-engine/Pre-built (0.72.5)
   - libevent (2.1.12)
-  - MoyasarApplePay (0.1.0):
+  - MoyasarApplePay (0.1.1):
     - ExpoModulesCore
     - MoyasarSdk
   - MoyasarSdk (0.3.0)
@@ -636,7 +636,7 @@ SPEC CHECKSUMS:
   glog: 04b94705f318337d7ead9e6d17c019bd9b1f6b1b
   hermes-engine: f6cf92a471053245614d9d8097736f6337d5b86c
   libevent: 4049cae6c81cdb3654a443be001fb9bdceff7913
-  MoyasarApplePay: f1d27ba8861f127c757cf8ec6da6bf290bb988b7
+  MoyasarApplePay: c4a7c06c90d40269197c2acebc733388733f10f3
   MoyasarSdk: bdf9befce46c4bd9e254ef8eb1d08c749acae97b
   RCT-Folly: 424b8c9a7a0b9ab2886ffe9c3b041ef628fd4fb1
   RCTRequired: df81ab637d35fac9e6eb94611cfd20f0feb05455
