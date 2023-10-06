@@ -1,0 +1,10 @@
+{
+  "extends": "expo/tsconfig.base",
+  "compilerOptions": {
+    "strict": true,
+    "paths": {
+      "moyasar-apple-pay": ["../src/index"],
+      "moyasar-apple-pay/*": ["../src/*"]
+    }
+  }
+}

@@ -1,0 +1,9 @@
+{
+  "platforms": ["ios", "android", "web"],
+  "ios": {
+    "modules": ["MoyasarApplePayModule"]
+  },
+  "android": {
+    "modules": ["expo.modules.moyasarapplepay.MoyasarApplePayModule"]
+  }
+}
