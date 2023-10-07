@@ -36,8 +36,9 @@ class PaymentAuthorizationControllerDelegate: NSObject, PKPaymentAuthorizationVi
                         completion(PKPaymentAuthorizationResult(status: .success, errors: nil))
                         break
                     case "failed":
-                        self.moyasarApplePayModule.onApplePayCompleted(applePayPaymentStatus: ApplePayPaymentStatus(paymentStatus: paymentInfo.status, amount: paymentInfo.amount, source: .moyasar, moyasar_payment_id: paymentInfo.id))
-                        self.closePaymentWithError(errorCode: 400, errorDomain: "PaymentError.moyasar", localizedDescription: "payment failed from moyasar", handler: completion, sendEvent: false)
+                        let localSource = self.getMoyasarPaymentSourceObject(source: paymentInfo.source)
+                        self.moyasarApplePayModule.onApplePayCompleted(applePayPaymentStatus: ApplePayPaymentStatus(paymentStatus: paymentInfo.status, amount: paymentInfo.amount, source: .moyasar, moyasar_payment_id: paymentInfo.id, errorDescription: localSource?.message ?? "payment failed from moyasar"))
+                        self.closePaymentWithError(errorCode: 400, errorDomain: "PaymentError.moyasar", localizedDescription: localSource?.message ?? "payment failed from moyasar", handler: completion, sendEvent: false)
                     default:
                         self.closePaymentWithError(errorCode: 401, errorDomain: "PaymentError.moyasar", localizedDescription: "unkown payment status from moyasar", handler: completion)
                     }
@@ -50,6 +51,24 @@ class PaymentAuthorizationControllerDelegate: NSObject, PKPaymentAuthorizationVi
         } catch {
             self.closePaymentWithError(errorCode: 404, errorDomain: "PaymentError.moyasar", localizedDescription: "could not verify payment form moyasar", handler: completion)
         }
+    }
+    
+    private func getMoyasarPaymentSourceObject(source: ApiPaymentSource) -> ApiApplePaySourceLocal? {
+        var result: ApiApplePaySourceLocal?
+        
+        switch source {
+        case .applePay(let source):
+            do {
+                let jsonData = try  JSONEncoder().encode(source)
+                result = try JSONDecoder().decode(ApiApplePaySourceLocal.self, from: jsonData)
+            } catch {
+                print("error parsing")
+            }
+        default:
+            print("payment created with different source")
+        }
+        
+        return result;
     }
     
     private func getMoyasarMetaData() -> [String: String] {

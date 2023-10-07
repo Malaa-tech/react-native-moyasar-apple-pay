@@ -8,6 +8,7 @@
 import Foundation
 import ExpoModulesCore
 import PassKit
+import MoyasarSdk
 
 struct CustomError: Error, LocalizedError {
     var errorDescription: String?
@@ -15,6 +16,16 @@ struct CustomError: Error, LocalizedError {
     init(_ description: String) {
         self.errorDescription = description
     }
+}
+
+struct ApiApplePaySourceLocal: Codable {
+    let type: String
+    let name: String?
+    let message: String?
+    let number: String?
+    let token: String?
+    let company: String?
+    let manual: String?
 }
 
 enum ApplePayModalStatus: String {
