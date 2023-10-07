@@ -11,6 +11,8 @@ import MoyasarSdk
 
 class PaymentAuthorizationControllerDelegate: NSObject, PKPaymentAuthorizationViewControllerDelegate {
     var moyasarApplePayModule: MoyasarApplePayModule!
+    let encoder = JSONEncoder()
+    let decoder = JSONDecoder()
     
     func paymentAuthorizationViewControllerDidFinish(_ controller: PKPaymentAuthorizationViewController) {
         controller.dismiss(animated: true, completion: nil)
@@ -59,8 +61,8 @@ class PaymentAuthorizationControllerDelegate: NSObject, PKPaymentAuthorizationVi
         switch source {
         case .applePay(let source):
             do {
-                let jsonData = try  JSONEncoder().encode(source)
-                result = try JSONDecoder().decode(ApiApplePaySourceLocal.self, from: jsonData)
+                let jsonData = try encoder.encode(source)
+                result = try decoder.decode(ApiApplePaySourceLocal.self, from: jsonData)
             } catch {
                 print("error parsing")
             }

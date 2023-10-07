@@ -18,14 +18,14 @@ struct CustomError: Error, LocalizedError {
     }
 }
 
-struct ApiApplePaySourceLocal: Codable {
-    let type: String
-    let name: String?
-    let message: String?
-    let number: String?
-    let token: String?
-    let company: String?
-    let manual: String?
+public struct ApiApplePaySourceLocal: Codable {
+    var type: String = "applepay"
+    var token: String?
+    var company: String?
+    var name: String?
+    var number: String?
+    var message: String?
+    var manual: String?
 }
 
 enum ApplePayModalStatus: String {
