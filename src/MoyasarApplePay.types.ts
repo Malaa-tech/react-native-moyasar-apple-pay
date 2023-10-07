@@ -52,6 +52,8 @@ export type ApplePayButtonExpoViewProps = {
     | "addMoney";
   buttonStyle?: "white" | "whiteOutline" | "black" | "automatic";
   radius?: number;
+  isDisabled?: boolean;
+  isLoading?: boolean;
 };
 
 export type ApplePayButtonProps = ApplePayButtonExpoViewProps & ApplePayOptions & {

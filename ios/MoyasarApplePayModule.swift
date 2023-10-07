@@ -37,7 +37,7 @@ public class MoyasarApplePayModule: Module {
                 let buttonType = ApplePayButtonExpoView.getButtonTypeFromString(buttonType: prop.buttonType)
                 let buttonStyle = ApplePayButtonExpoView.getButtonStyleFromString(buttonStyle: prop.buttonStyle)
                 
-                view.renderButton(paymentButtonType: buttonType, paymentButtonStyle: buttonStyle, cornerRadius: prop.radius)
+                view.renderButton(paymentButtonType: buttonType, paymentButtonStyle: buttonStyle, cornerRadius: prop.radius, isDisabled: prop.isDisabled, isLoading: prop.isLoading)
             }
         }
     }

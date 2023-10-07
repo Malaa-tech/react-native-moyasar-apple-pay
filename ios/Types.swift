@@ -77,7 +77,7 @@ struct ApplePayOptions: Record {
     var amount: Int
     
     @Field
-    var description: String = "Malaa Technologies"
+    var description: String = ""
     
     @Field
     var currency: String = "SAR"
@@ -119,4 +119,10 @@ struct ApplePayButtonOptions: Record {
     
     @Field
     var radius: Double = 4.0
+    
+    @Field
+    var isDisabled: Bool = false
+    
+    @Field
+    var isLoading: Bool = false
 }

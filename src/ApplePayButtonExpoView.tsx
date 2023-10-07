@@ -18,6 +18,8 @@ export default function MoyasarApplePayView(
         buttonType: props.buttonType,
         buttonStyle: props.buttonStyle,
         radius: props.radius,
+        isLoading: props.isLoading,
+        isDisabled: props.isDisabled
       }}
       style={{
         height: props.height,

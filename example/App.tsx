@@ -7,7 +7,7 @@ import {
   TouchableOpacity,
   View,
 } from "react-native";
-import { MalaaMerchant, MoyasarKeys } from "./configs";
+import { Merchant, MoyasarKeys } from "./configs";
 
 export default function App() {
   const [amount, setAmount] = useState(40000); // 400 SAR // for failure
@@ -73,7 +73,7 @@ export default function App() {
           MoyasarApplePay.initiateApplePayPayment({
             amount,
             moyasarPublicKey: MoyasarKeys.TEST,
-            merchantIdentifier: MalaaMerchant,
+            merchantIdentifier: Merchant,
             countryCode: "SA",
             currency: "SAR",
             isMadaSupported: true,
@@ -119,7 +119,7 @@ export default function App() {
           MoyasarApplePay.initiateApplePayPayment({
             amount,
             moyasarPublicKey: MoyasarKeys.PROD,
-            merchantIdentifier: MalaaMerchant,
+            merchantIdentifier: Merchant,
             countryCode: "SA",
             currency: "SAR",
             isMadaSupported: true,
@@ -186,7 +186,7 @@ export default function App() {
           buttonType="plain"
           radius={20}
           amount={amount}
-          merchantIdentifier={MalaaMerchant}
+          merchantIdentifier={Merchant}
           moyasarPublicKey={MoyasarKeys.TEST}
           summaryItems={[
             {
@@ -224,6 +224,7 @@ export default function App() {
           }}
           width={380}
           height={50}
+          isDisabled={false}
         />
       </View>
     </View>

@@ -4,4 +4,4 @@ export const MoyasarKeys = {
   PROD: "pk_live",
 };
 
-export const MalaaMerchant = "merchant.test.something";
+export const Merchant = "merchant.test.something";

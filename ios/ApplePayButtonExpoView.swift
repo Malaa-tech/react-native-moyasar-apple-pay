@@ -12,7 +12,8 @@ class ApplePayButtonExpoView: ExpoView {
     var applePayButton: PKPaymentButton?
     var moyasarApplePayModule: MoyasarApplePayModule!
     var applePayOptions: ApplePayOptions!
-
+    var spinner: UIActivityIndicatorView!
+    
     required init(appContext: AppContext? = nil) {
         super.init(appContext: appContext)
         setupView()
@@ -20,18 +21,26 @@ class ApplePayButtonExpoView: ExpoView {
     
     private func setupView() {
         clipsToBounds = true
-        renderButton(paymentButtonType: .plain, paymentButtonStyle: .black, cornerRadius: 4.0)
     }
     
-    final func renderButton(paymentButtonType: PKPaymentButtonType, paymentButtonStyle: PKPaymentButtonStyle, cornerRadius: Double) {
+    final func renderButton(paymentButtonType: PKPaymentButtonType, paymentButtonStyle: PKPaymentButtonStyle, cornerRadius: Double, isDisabled: Bool, isLoading: Bool) {
         applePayButton?.removeFromSuperview()
         
         let newButton = PKPaymentButton(paymentButtonType: paymentButtonType, paymentButtonStyle: paymentButtonStyle)
         newButton.translatesAutoresizingMaskIntoConstraints = false
         newButton.cornerRadius = cornerRadius
         newButton.addTarget(self, action: #selector(handleClick), for: .touchUpInside)
+
+        if (isDisabled || isLoading) {
+            newButton.isUserInteractionEnabled = false
+            newButton.alpha = 0.5
+        }
         
         addSubview(newButton)
+        
+        if (isLoading) {
+            attachSpinner(isLoading: isLoading, paymentButtonStyle: paymentButtonStyle)
+        }
         
         NSLayoutConstraint.activate([
             newButton.topAnchor.constraint(equalTo: self.topAnchor),
@@ -47,6 +56,29 @@ class ApplePayButtonExpoView: ExpoView {
         moyasarApplePayModule.onApplePayButtonClicked()
     }
     
+    private func attachSpinner(isLoading: Bool, paymentButtonStyle: PKPaymentButtonStyle) {
+        spinner?.removeFromSuperview()
+
+        spinner = UIActivityIndicatorView()
+        switch paymentButtonStyle {
+        case .black:
+            spinner.color = .white
+        case .white:
+            spinner.color = .black
+        case .whiteOutline:
+            spinner.color = .black
+        default:
+            spinner.color = .white
+        }
+        spinner.startAnimating()
+        spinner.translatesAutoresizingMaskIntoConstraints = false
+        addSubview(spinner)
+        
+        NSLayoutConstraint.activate([
+            spinner.centerXAnchor.constraint(equalTo: self.centerXAnchor),
+            spinner.centerYAnchor.constraint(equalTo: self.centerYAnchor)
+        ])
+    }
     
     static func getButtonStyleFromString(buttonStyle: String) -> PKPaymentButtonStyle {
         switch buttonStyle {
