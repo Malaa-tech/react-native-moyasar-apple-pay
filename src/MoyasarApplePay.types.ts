@@ -55,11 +55,20 @@ export type ApplePayButtonExpoViewProps = {
   isDisabled?: boolean;
   isLoading?: boolean;};
 
-export type ApplePayButtonProps = ApplePayButtonExpoViewProps & ApplePayOptions & {
+
+type ApplePayButtonBaseProps = ApplePayButtonExpoViewProps & {
   onApplePayModalStatusChanged?: (event: onApplePayModalStatusChangedPayload) => void;
   onApplePayCompleted?: (event: OnApplePayCompletedPayload) => void; 
-  onPress?: () => void;
-} & {
   width?: number;
   height?: number;
 };
+
+type WithOnPress = {
+  onPress: () => void;
+};
+
+type WithoutOnPress = {
+  onPress?: never;
+} & ApplePayOptions;
+
+export type ApplePayButtonProps = ApplePayButtonBaseProps & (WithOnPress | WithoutOnPress);
