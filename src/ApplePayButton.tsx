@@ -19,23 +19,27 @@ const ApplePayButton = (props: ApplePayButtonProps) => {
     });
 
     const buttonClicked = onApplePayButtonClicked(() => {
-      initiateApplePayPayment({
-        amount: props.amount,
-        currency: props.currency,
-        merchantIdentifier: props.merchantIdentifier,
-        moyasarPublicKey: props.moyasarPublicKey,
-        summaryItems: props.summaryItems,
-        countryCode: props.countryCode,
-        description: props.description,
-        isAmexSupported: props.isAmexSupported,
-        isMadaSupported: props.isMadaSupported,
-        isVisaSupported: props.isVisaSupported,
-        isMasterCardSupported: props.isMasterCardSupported,
-        isMerchant3DSEnabled: props.isMerchant3DSEnabled,
-        metaData: props.metaData,
-      }).catch((e) => {
-        throw new Error(e)
-      })
+      if (props.onPress) {
+        props.onPress();
+      } else {
+        initiateApplePayPayment({
+          amount: props.amount,
+          currency: props.currency,
+          merchantIdentifier: props.merchantIdentifier,
+          moyasarPublicKey: props.moyasarPublicKey,
+          summaryItems: props.summaryItems,
+          countryCode: props.countryCode,
+          description: props.description,
+          isAmexSupported: props.isAmexSupported,
+          isMadaSupported: props.isMadaSupported,
+          isVisaSupported: props.isVisaSupported,
+          isMasterCardSupported: props.isMasterCardSupported,
+          isMerchant3DSEnabled: props.isMerchant3DSEnabled,
+          metaData: props.metaData,
+        }).catch((e) => {
+          throw new Error(e)
+        })
+      }
     })
 
     return () => {

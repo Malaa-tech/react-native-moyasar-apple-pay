@@ -225,6 +225,9 @@ export default function App() {
           width={380}
           height={50}
           isDisabled={false}
+          onPress={() => {
+            console.log('button clicked');
+          }}
         />
       </View>
     </View>

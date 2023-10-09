@@ -53,12 +53,12 @@ export type ApplePayButtonExpoViewProps = {
   buttonStyle?: "white" | "whiteOutline" | "black" | "automatic";
   radius?: number;
   isDisabled?: boolean;
-  isLoading?: boolean;
-};
+  isLoading?: boolean;};
 
 export type ApplePayButtonProps = ApplePayButtonExpoViewProps & ApplePayOptions & {
   onApplePayModalStatusChanged?: (event: onApplePayModalStatusChangedPayload) => void;
   onApplePayCompleted?: (event: OnApplePayCompletedPayload) => void; 
+  onPress?: () => void;
 } & {
   width?: number;
   height?: number;
