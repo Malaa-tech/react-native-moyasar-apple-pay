@@ -59,8 +59,8 @@ export type ApplePayButtonExpoViewProps = {
 type ApplePayButtonBaseProps = ApplePayButtonExpoViewProps & {
   onApplePayModalStatusChanged?: (event: onApplePayModalStatusChangedPayload) => void;
   onApplePayCompleted?: (event: OnApplePayCompletedPayload) => void; 
-  width?: number;
-  height?: number;
+  width?: number | string;
+  height?: number | string;
 };
 
 type WithOnPress = {
