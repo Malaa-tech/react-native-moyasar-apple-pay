@@ -29,6 +29,12 @@ class PaymentAuthorizationControllerDelegate: NSObject, PKPaymentAuthorizationVi
                 metadata: self.getMoyasarMetaData()
             )
             let service = ApplePayService()
+       
+            if (payment.token.transactionIdentifier == "Simulated Identifier") {
+                self.closePaymentWithError(errorCode: 406, errorDomain: "PaymentError.moyasar", localizedDescription:  "Simulator payments not supported", handler: completion)
+                return;
+            }
+            
             try service.authorizePayment(request: moyasarPaymentRequest, token: payment.token) { result in
                 switch result {
                 case .success(let paymentInfo):
