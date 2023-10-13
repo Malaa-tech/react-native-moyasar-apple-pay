@@ -1,24 +1,13 @@
-import React, { useEffect, useRef } from "react";
+import React, { useCallback, useEffect, useMemo, useRef } from "react";
 
 import { onApplePayModalStatusChanged, onApplePayCompleted, onApplePayButtonClicked, initiateApplePayPayment } from ".";
 import MoyasarApplePayView from "./ApplePayButtonExpoView";
 import { ApplePayButtonExpoViewProps, ApplePayButtonProps, ApplePayOptions } from "./MoyasarApplePay.types";
 
 const ApplePayButton = (props: ApplePayButtonProps) => {
-  useEffect(() => {
-    const closedListener = onApplePayModalStatusChanged((payload) => {
-      if (props.onApplePayModalStatusChanged) {
-        props.onApplePayModalStatusChanged(payload);
-      }
-    });
 
-    const completedListener = onApplePayCompleted((payload) => {
-      if (props.onApplePayCompleted) {
-        props.onApplePayCompleted(payload);
-      }
-    });
-
-    const buttonClicked = onApplePayButtonClicked(() => {
+  const onClickCallback = useCallback(
+    () => {
       if (props.onPress) {
         props.onPress();
       } else {
@@ -40,14 +29,33 @@ const ApplePayButton = (props: ApplePayButtonProps) => {
           throw new Error(e)
         })
       }
-    })
+    },
+    [props],
+  );
+
+  useEffect(() => {
+    const closedListener = onApplePayModalStatusChanged((payload) => {
+      if (props.onApplePayModalStatusChanged) {
+        props.onApplePayModalStatusChanged(payload);
+      }
+    });
+
+    const completedListener = onApplePayCompleted((payload) => {
+      if (props.onApplePayCompleted) {
+        props.onApplePayCompleted(payload);
+      }
+    });
+
+    const buttonClicked = onApplePayButtonClicked(() => {
+      onClickCallback(); 
+    });
 
     return () => {
       closedListener.remove();
       completedListener.remove();
       buttonClicked.remove();
     };
-  }, [props]);
+  }, []);
 
   const getWidthAndHeight: () => {width: number; height: number} = () => {
     let localWidth, localHeight;
