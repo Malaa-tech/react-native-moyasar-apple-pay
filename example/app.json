@@ -17,7 +17,7 @@
     "plugins": ["../app.plugin.js"],
     "ios": {
       "supportsTablet": true,
-      "bundleIdentifier": "expo.modules.moyasarapplepay.example"
+      "bundleIdentifier": "expo.modules.moyasarapplepay.example",
       "entitlements": {
         "com.apple.developer.in-app-payments": [""]
       }
