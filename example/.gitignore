@@ -36,3 +36,7 @@ yarn-error.*
 
 configs.ts
 configs.js
+
+# everything inside ios and android directories
+/ios
+/android
