@@ -20,7 +20,7 @@ export default {
       supportsTablet: true,
       bundleIdentifier: Configs.AppBundleID,
       entitlements: {
-        "com.apple.developer.in-app-payments": [""]
+        "com.apple.developer.in-app-payments": [Configs.Merchant]
       }
     },
     android: {
