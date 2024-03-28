@@ -58,22 +58,12 @@ public class MoyasarApplePayModule: Module {
     
     func initiatePayment(applePayOptions: ApplePayOptions) throws {
         self.applePayOptions = applePayOptions
-        
-        do {
-            try initiateMoyasar(publicKey: applePayOptions.moyasarPublicKey)
-        } catch {
-            throw CustomError("Failed to initialize Moyasar with the provided public key.")
-        }
-        
+       
         do {
             try initiateApplePayPayment()
         } catch {
             throw error
         }
-    }
-    
-    private func initiateMoyasar(publicKey: String) throws {
-        try Moyasar.setApiKey(publicKey)
     }
     
     private func initiateApplePayPayment() throws {
