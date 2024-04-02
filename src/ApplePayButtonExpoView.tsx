@@ -10,7 +10,7 @@ const NativeView: React.ComponentType<
 > = requireNativeViewManager("MoyasarApplePay");
 
 export default function MoyasarApplePayView(
-  props: ApplePayButtonExpoViewProps & { width: number; height: number },
+  props: ApplePayButtonExpoViewProps & { width: number; height: number }
 ) {
   return (
     <NativeView
@@ -19,11 +19,11 @@ export default function MoyasarApplePayView(
         buttonStyle: props.buttonStyle,
         radius: props.radius,
         isLoading: props.isLoading,
-        isDisabled: props.isDisabled
+        isDisabled: props.isDisabled,
       }}
       style={{
         height: props.height,
-        width: props.width
+        width: props.width,
       }}
     />
   );

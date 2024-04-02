@@ -15,41 +15,41 @@ import {
 import MoyasarApplePayModule from "./MoyasarApplePayModule";
 
 const emitter = new EventEmitter(
-  MoyasarApplePayModule ?? NativeModulesProxy.MoyasarApplePay,
+  MoyasarApplePayModule ?? NativeModulesProxy.MoyasarApplePay
 );
 
 export function onApplePayModalStatusChanged(
-  listener: (event: onApplePayModalStatusChangedPayload) => void,
+  listener: (event: onApplePayModalStatusChangedPayload) => void
 ): Subscription {
   return emitter.addListener<onApplePayModalStatusChangedPayload>(
     "onApplePayModalStatusChanged",
-    listener,
+    listener
   );
 }
 
 export function onApplePayCompleted(
-  listener: (event: OnApplePayCompletedPayload) => void,
+  listener: (event: OnApplePayCompletedPayload) => void
 ): Subscription {
   return emitter.addListener<OnApplePayCompletedPayload>(
     "onApplePayCompleted",
-    listener,
+    listener
   );
 }
 
 export function onApplePayButtonClicked(
-  listener: (event: void) => void,
+  listener: (event: void) => void
 ): Subscription {
   return emitter.addListener<void>("OnApplePayButtonClicked", listener);
 }
 
 export async function initiateApplePayPayment(
-  applePayOptions: ApplePayOptions,
+  applePayOptions: ApplePayOptions
 ) {
   return await MoyasarApplePayModule.initiateApplePayPayment(applePayOptions);
 }
 
 export async function canMakePayments(): Promise<boolean> {
-  if (Platform.OS === 'android') {
+  if (Platform.OS === "android") {
     return new Promise((resolve, reject) => {
       resolve(false);
     });
@@ -57,4 +57,9 @@ export async function canMakePayments(): Promise<boolean> {
   return MoyasarApplePayModule.canMakePayments();
 }
 
-export { onApplePayModalStatusChangedPayload, ApplePayOptions, ApplePayButton };
+export {
+  onApplePayModalStatusChangedPayload,
+  OnApplePayCompletedPayload,
+  ApplePayOptions,
+  ApplePayButton,
+};

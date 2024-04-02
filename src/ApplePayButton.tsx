@@ -1,37 +1,42 @@
 import React, { useCallback, useEffect, useMemo, useRef } from "react";
 
-import { onApplePayModalStatusChanged, onApplePayCompleted, onApplePayButtonClicked, initiateApplePayPayment } from ".";
+import {
+  onApplePayModalStatusChanged,
+  onApplePayCompleted,
+  onApplePayButtonClicked,
+  initiateApplePayPayment,
+} from ".";
 import MoyasarApplePayView from "./ApplePayButtonExpoView";
-import { ApplePayButtonExpoViewProps, ApplePayButtonProps, ApplePayOptions } from "./MoyasarApplePay.types";
+import {
+  ApplePayButtonExpoViewProps,
+  ApplePayButtonProps,
+  ApplePayOptions,
+} from "./MoyasarApplePay.types";
 
 const ApplePayButton = (props: ApplePayButtonProps) => {
-
-  const onClickCallback = useCallback(
-    () => {
-      if (props.onPress) {
-        props.onPress();
-      } else {
-        initiateApplePayPayment({
-          amount: props.amount,
-          currency: props.currency,
-          merchantIdentifier: props.merchantIdentifier,
-          moyasarPublicKey: props.moyasarPublicKey,
-          summaryItems: props.summaryItems,
-          countryCode: props.countryCode,
-          description: props.description,
-          isAmexSupported: props.isAmexSupported,
-          isMadaSupported: props.isMadaSupported,
-          isVisaSupported: props.isVisaSupported,
-          isMasterCardSupported: props.isMasterCardSupported,
-          isMerchant3DSEnabled: props.isMerchant3DSEnabled,
-          metaData: props.metaData,
-        }).catch((e) => {
-          throw new Error(e)
-        })
-      }
-    },
-    [props],
-  );
+  const onClickCallback = useCallback(() => {
+    if (props.onPress) {
+      props.onPress();
+    } else {
+      initiateApplePayPayment({
+        amount: props.amount,
+        currency: props.currency,
+        merchantIdentifier: props.merchantIdentifier,
+        moyasarPublicKey: props.moyasarPublicKey,
+        summaryItems: props.summaryItems,
+        countryCode: props.countryCode,
+        description: props.description,
+        isAmexSupported: props.isAmexSupported,
+        isMadaSupported: props.isMadaSupported,
+        isVisaSupported: props.isVisaSupported,
+        isMasterCardSupported: props.isMasterCardSupported,
+        isMerchant3DSEnabled: props.isMerchant3DSEnabled,
+        metaData: props.metaData,
+      }).catch((e) => {
+        throw new Error(e);
+      });
+    }
+  }, [props]);
 
   useEffect(() => {
     const closedListener = onApplePayModalStatusChanged((payload) => {
@@ -47,7 +52,7 @@ const ApplePayButton = (props: ApplePayButtonProps) => {
     });
 
     const buttonClicked = onApplePayButtonClicked(() => {
-      onClickCallback(); 
+      onClickCallback();
     });
 
     return () => {
@@ -57,25 +62,25 @@ const ApplePayButton = (props: ApplePayButtonProps) => {
     };
   }, []);
 
-  const getWidthAndHeight: () => {width: number; height: number} = () => {
+  const getWidthAndHeight: () => { width: number; height: number } = () => {
     let localWidth, localHeight;
 
     if (!props.width) {
-       localWidth = 350
+      localWidth = 350;
     } else {
-      localWidth = props.width
+      localWidth = props.width;
     }
     if (!props.height) {
-      localHeight = 50
+      localHeight = 50;
     } else {
-      localHeight = props.height
+      localHeight = props.height;
     }
 
     return {
       width: localWidth,
-      height: localHeight
-    }
-  }
+      height: localHeight,
+    };
+  };
 
   return <MoyasarApplePayView {...props} {...getWidthAndHeight()} />;
 };

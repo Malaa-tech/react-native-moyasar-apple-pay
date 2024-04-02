@@ -21,7 +21,7 @@ export default function App() {
         } else {
           setStatus("Apple Pay Modal Closed");
         }
-      },
+      }
     );
 
     const completedListener = MoyasarApplePay.onApplePayCompleted((payload) => {
@@ -84,12 +84,12 @@ export default function App() {
             description: "Malaa Technologies",
             metaData: [
               {
-                key: 'payment_id',
-                value: 'test-payment-id-native-button',
+                key: "payment_id",
+                value: "test-payment-id-native-button",
               },
               {
-                key: 'sequence_id',
-                value: 'test-sequence_id-id-native-button',
+                key: "sequence_id",
+                value: "test-sequence_id-id-native-button",
               },
             ],
             summaryItems: [
@@ -102,10 +102,9 @@ export default function App() {
                 itemTitle: "Total",
               },
             ],
-          })
-            .catch((e) => {
-              setStatus(e.message);
-            });
+          }).catch((e) => {
+            setStatus(e.message);
+          });
         }}
         style={{
           paddingTop: 40,
@@ -129,12 +128,12 @@ export default function App() {
             isMerchant3DSEnabled: true,
             metaData: [
               {
-                key: 'payment_id',
-                value: 'test-payment-id-native-button',
+                key: "payment_id",
+                value: "test-payment-id-native-button",
               },
               {
-                key: 'sequence_id',
-                value: 'test-sequence_id-id-native-button',
+                key: "sequence_id",
+                value: "test-sequence_id-id-native-button",
               },
             ],
             description: "Malaa Technologies",
@@ -165,7 +164,7 @@ export default function App() {
             if (canMakePayments) {
               alert("You can make payments");
             } else {
-              alert("You can't make payments");;
+              alert("You can't make payments");
             }
           });
         }}
@@ -199,14 +198,14 @@ export default function App() {
             },
           ]}
           metaData={[
-              {
-                key: 'payment_id',
-                value: 'test-payment-id-native-button',
-              },
-              {
-                key: 'sequence_id',
-                value: 'test-sequence_id-id-native-button',
-              },
+            {
+              key: "payment_id",
+              value: "test-payment-id-native-button",
+            },
+            {
+              key: "sequence_id",
+              value: "test-sequence_id-id-native-button",
+            },
           ]}
           countryCode="SA"
           currency="SAR"
@@ -226,7 +225,7 @@ export default function App() {
           height={50}
           isDisabled={false}
           onPress={() => {
-            console.log('button clicked');
+            console.log("button clicked");
           }}
         />
       </View>
