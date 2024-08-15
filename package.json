@@ -1,6 +1,6 @@
 {
   "name": "react-native-moyasar-apple-pay",
-  "version": "0.3.4",
+  "version": "0.4.0",
   "description": "iOS native apple pay implementation & integration with Moyasar SDK",
   "main": "build/index.js",
   "types": "build/index.d.ts",
