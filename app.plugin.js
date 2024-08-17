@@ -19,7 +19,7 @@ const withIOS = config => {
                 tag: 'add Moyasar SDK to Podfile',
                 src: contents,
                 newSrc: [
-                    `pod 'MoyasarSdk', git: 'https://github.com/moyasar/moyasar-ios-pod.git', :tag => 'v1.0.5'`,
+                    `pod 'MoyasarSdk', git: 'https://github.com/moyasar/moyasar-ios-pod.git', :tag => 'v2.0.1'`,
                 ].join('\n'),
                 anchor: 'use_expo_modules!',
                 offset: 1,

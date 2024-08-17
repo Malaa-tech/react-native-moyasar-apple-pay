@@ -9,8 +9,14 @@ import {
 } from "react-native";
 import { Merchant, MoyasarKeys } from "./configs";
 
+// 100 <-> 10000 -> APPROVED
+// 10100 <-> 60000 -> UNSPECIFIED_FAILURE
+// 60100 <-> 100000 -> DECLINED
+// 110000 <-> 170000 -> INSUFFICIENT_FUNDS
+// Other -> APPROVED
+
 export default function App() {
-  const [amount, setAmount] = useState(40000); // 400 SAR // for failure
+  const [amount, setAmount] = useState(100); // 400 SAR // for failure
   const [status, setStatus] = useState("");
 
   useEffect(() => {
@@ -224,9 +230,6 @@ export default function App() {
           width={380}
           height={50}
           isDisabled={false}
-          onPress={() => {
-            console.log("button clicked");
-          }}
         />
       </View>
     </View>

@@ -1,4 +1,4 @@
-import React, { useCallback, useEffect, useMemo, useRef } from "react";
+import React, { useCallback, useEffect } from "react";
 
 import {
   onApplePayModalStatusChanged,
@@ -8,9 +8,7 @@ import {
 } from ".";
 import MoyasarApplePayView from "./ApplePayButtonExpoView";
 import {
-  ApplePayButtonExpoViewProps,
   ApplePayButtonProps,
-  ApplePayOptions,
 } from "./MoyasarApplePay.types";
 
 const ApplePayButton = (props: ApplePayButtonProps) => {

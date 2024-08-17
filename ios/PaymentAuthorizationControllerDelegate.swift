@@ -28,42 +28,41 @@ class PaymentAuthorizationControllerDelegate: NSObject, PKPaymentAuthorizationVi
                 description: self.moyasarApplePayModule.applePayOptions.description,
                 metadata: self.getMoyasarMetaData()
             )
-            let service = ApplePayService(apiKey: self.moyasarApplePayModule.applePayOptions.moyasarPublicKey)
+            let service = try ApplePayService(apiKey: self.moyasarApplePayModule.applePayOptions.moyasarPublicKey)
+            
             
             if (payment.token.transactionIdentifier == "Simulated Identifier") {
                 self.closePaymentWithError(errorCode: 406, errorDomain: "PaymentError.moyasar", localizedDescription:  "Simulator payments not supported", handler: completion)
                 return;
             }
             
-            try service.authorizePayment(request: moyasarPaymentRequest, token: payment.token) {result in
-                switch (result) {
-                case .success(let paymentInfo):
-                    switch paymentInfo.status {
+            Task {
+                do {
+                    let paymentResult = try await service.authorizePayment(request: moyasarPaymentRequest, token: payment.token)
+                    
+                    switch (paymentResult.status) {
                     case .paid:
-                        self.moyasarApplePayModule.onApplePayCompleted(applePayPaymentStatus: ApplePayPaymentStatus(paymentStatus: paymentInfo.status.rawValue, amount: paymentInfo.amount, source: .moyasar, moyasar_payment_id: paymentInfo.id))
+                        self.moyasarApplePayModule.onApplePayCompleted(applePayPaymentStatus: ApplePayPaymentStatus(paymentStatus: paymentResult.status.rawValue, amount: paymentResult.amount, source: .moyasar, moyasar_payment_id: paymentResult.id))
                         completion(PKPaymentAuthorizationResult(status: .success, errors: nil))
                         break
                     case .failed:
-                        let localSource = self.getMoyasarPaymentSourceObject(source: paymentInfo.source)
-                        self.moyasarApplePayModule.onApplePayCompleted(applePayPaymentStatus: ApplePayPaymentStatus(paymentStatus: paymentInfo.status.rawValue, amount: paymentInfo.amount, source: .moyasar, moyasar_payment_id: paymentInfo.id, errorDescription: localSource?.message ?? "payment failed from moyasar"))
+                        let localSource = self.getMoyasarPaymentSourceObject(source: paymentResult.source)
+                        self.moyasarApplePayModule.onApplePayCompleted(applePayPaymentStatus: ApplePayPaymentStatus(paymentStatus: paymentResult.status.rawValue, amount: paymentResult.amount, source: .moyasar, moyasar_payment_id: paymentResult.id, errorDescription: localSource?.message ?? "payment failed from moyasar"))
                         self.closePaymentWithError(errorCode: 400, errorDomain: "PaymentError.moyasar", localizedDescription: localSource?.message ?? "payment failed from moyasar", handler: completion, sendEvent: false)
-                    default:
-                        self.closePaymentWithError(errorCode: 401, errorDomain: "PaymentError.moyasar", localizedDescription: "unkown payment status from moyasar", handler: completion)
+                        break
+                    case .initiated, .authorized, .captured, .refunded, .voided, .verified:
+                        self.closePaymentWithError(errorCode: 401, errorDomain: "PaymentError.moyasar", localizedDescription: "something wrong happened when checking payment with moyasar (uncaptured status) \(paymentResult.status)", handler: completion)
+                        break
+                    @unknown default:
+                        self.closePaymentWithError(errorCode: 402, errorDomain: "PaymentError.moyasar", localizedDescription: "something wrong happened when checking payment with moyasar (unknown status)", handler: completion)
+                        break
                     }
-                    break
-                case .error(let errorInfo):
-                    if (errorInfo.localizedDescription.contains("(MoyasarSdk.MoyasarError error 3.)")) {
-                        self.closePaymentWithError(errorCode: 405, errorDomain: "PaymentError.moyasar", localizedDescription: "invalid moyasar public api key", handler: completion)
-                        return;
-                    }
-                    
-                    self.closePaymentWithError(errorCode: 402, errorDomain: "PaymentError.moyasar", localizedDescription: "error happened when checking payment with moyasar", handler: completion)
-                @unknown default:
-                    self.closePaymentWithError(errorCode: 402, errorDomain: "PaymentError.moyasar", localizedDescription: "something wrong happened when checking payment with moyasar", handler: completion)
+                } catch {
+                    self.closePaymentWithError(errorCode: 411, errorDomain: "PaymentError.moyasar", localizedDescription: "something wrong happened when checking (final catch) \(error)", handler: completion)
                 }
             }
         } catch {
-            self.closePaymentWithError(errorCode: 404, errorDomain: "PaymentError.moyasar", localizedDescription: "could not verify payment form moyasar", handler: completion)
+            self.closePaymentWithError(errorCode: 404, errorDomain: "PaymentError.moyasar", localizedDescription: "could not verify payment form moyasar \(error)", handler: completion)
         }
     }
     

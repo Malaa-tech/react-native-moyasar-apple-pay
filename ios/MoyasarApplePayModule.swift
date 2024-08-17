@@ -60,24 +60,20 @@ public class MoyasarApplePayModule: Module {
         self.applePayOptions = applePayOptions
        
         do {
-            try initiateApplePayPayment()
+            let paymentRequest = createPaymentRequest()
+            
+            if let applePayVC = PKPaymentAuthorizationViewController(paymentRequest: paymentRequest) {
+                applePayVC.delegate = paymentAuthorizationControllerDelegate!
+                
+                DispatchQueue.main.async {
+                    self.onApplePayModalStatusChanged(applePayModalStatus: .open)
+                    self.appContext?.utilities?.currentViewController()?.present(applePayVC, animated: true, completion: nil)
+                }
+            } else {
+                throw CustomError("Unable to initialize PKPaymentAuthorizationViewController, check paymentOptions are correct, (Check Native Logs)")
+            }
         } catch {
             throw error
-        }
-    }
-    
-    private func initiateApplePayPayment() throws {
-        let paymentRequest = createPaymentRequest()
-        
-        if let applePayVC = PKPaymentAuthorizationViewController(paymentRequest: paymentRequest) {
-            applePayVC.delegate = paymentAuthorizationControllerDelegate!
-            
-            DispatchQueue.main.async {
-                self.onApplePayModalStatusChanged(applePayModalStatus: .open)
-                self.appContext?.utilities?.currentViewController()?.present(applePayVC, animated: true, completion: nil)
-            }
-        } else {
-            throw CustomError("Unable to initialize PKPaymentAuthorizationViewController, check paymentOptions are correct, (Check Native Logs)")
         }
     }
     

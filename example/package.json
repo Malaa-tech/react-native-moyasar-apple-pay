@@ -10,7 +10,9 @@
     "prebuild": "expo prebuild --clean"
   },
   "dependencies": {
+    "babel-plugin-module-resolver": "^5.0.2",
     "expo": "^51.0.14",
+    "expo-dev-client": "~4.0.23",
     "expo-splash-screen": "~0.27.5",
     "expo-status-bar": "~1.12.1",
     "react": "18.2.0",
