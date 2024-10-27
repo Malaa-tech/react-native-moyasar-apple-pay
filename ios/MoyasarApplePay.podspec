@@ -16,7 +16,7 @@ Pod::Spec.new do |s|
   s.static_framework = true
 
   s.dependency 'ExpoModulesCore'
-  s.dependency 'MoyasarSdk', '~> 2.0.1'
+  s.dependency 'MoyasarSdk', '~> 3.0.0'
 
   # Swift/Objective-C compatibility
   s.pod_target_xcconfig = {
