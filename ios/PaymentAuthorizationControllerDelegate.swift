@@ -30,16 +30,17 @@ class PaymentAuthorizationControllerDelegate: NSObject, PKPaymentAuthorizationVi
             )
             let service = try ApplePayService(apiKey: self.moyasarApplePayModule.applePayOptions.moyasarPublicKey)
             
-            if payment.token.transactionIdentifier == "Simulated Identifier" {
-                self.closePaymentWithError(errorCode: 406, errorDomain: "PaymentError.moyasar", localizedDescription: "Simulator payments not supported", handler: completion)
-                return
+            
+            if (payment.token.transactionIdentifier == "Simulated Identifier") {
+                self.closePaymentWithError(errorCode: 406, errorDomain: "PaymentError.moyasar", localizedDescription:  "Simulator payments not supported", handler: completion)
+                return;
             }
             
             Task {
                 do {
                     let paymentResult = try await service.authorizePayment(request: moyasarPaymentRequest, token: payment.token)
                     
-                    switch paymentResult.status {
+                    switch (paymentResult.status) {
                     case .paid:
                         self.moyasarApplePayModule.onApplePayCompleted(applePayPaymentStatus: ApplePayPaymentStatus(paymentStatus: paymentResult.status.rawValue, amount: paymentResult.amount, source: .moyasar, moyasar_payment_id: paymentResult.id))
                         completion(PKPaymentAuthorizationResult(status: .success, errors: nil))
@@ -84,18 +85,11 @@ class PaymentAuthorizationControllerDelegate: NSObject, PKPaymentAuthorizationVi
     }
     
     private func getMoyasarMetaData() -> [String: MetadataValue] {
-        var metaData: [String: MetadataValue] = [:]
+        var metaData: [String: MetadataValue] = [:];
         for metaDataItem in self.moyasarApplePayModule.applePayOptions.metaData {
-            if let jsonData = metaDataItem.value.data(using: .utf8) {
-                do {
-                    let metadataValue = try JSONDecoder().decode(MetadataValue.self, from: jsonData)
-                    metaData[metaDataItem.key] = metadataValue
-                } catch {
-                    print("Error decoding MetadataValue: \(error)")
-                }
-            }
+            metaData[metaDataItem.key] = .stringValue(metaDataItem.value)
         }
-        return metaData
+        return metaData;
     }
     
     private func closePaymentWithError(errorCode: Int, errorDomain: String, localizedDescription: String, handler completion: @escaping (PKPaymentAuthorizationResult) -> Void, sendEvent: Bool = true) {
