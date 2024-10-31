@@ -21,7 +21,7 @@ class PaymentAuthorizationControllerDelegate: NSObject, PKPaymentAuthorizationVi
     
     func paymentAuthorizationViewController(_ controller: PKPaymentAuthorizationViewController, didAuthorizePayment payment: PKPayment, handler completion: @escaping (PKPaymentAuthorizationResult) -> Void) {
         do {
-            let moyasarPaymentRequest = PaymentRequest(
+            let moyasarPaymentRequest = try PaymentRequest(
                 apiKey: self.moyasarApplePayModule.applePayOptions.moyasarPublicKey,
                 amount: self.moyasarApplePayModule.applePayOptions.amount,
                 currency: self.moyasarApplePayModule.applePayOptions.currency,
@@ -84,10 +84,10 @@ class PaymentAuthorizationControllerDelegate: NSObject, PKPaymentAuthorizationVi
         return result;
     }
     
-    private func getMoyasarMetaData() -> [String: String] {
-        var metaData: [String: String] = [:];
+    private func getMoyasarMetaData() -> [String: MetadataValue] {
+        var metaData: [String: MetadataValue] = [:];
         for metaDataItem in self.moyasarApplePayModule.applePayOptions.metaData {
-            metaData[metaDataItem.key] = metaDataItem.value
+            metaData[metaDataItem.key] = .stringValue(metaDataItem.value)
         }
         return metaData;
     }
