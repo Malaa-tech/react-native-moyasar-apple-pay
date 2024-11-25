@@ -9,13 +9,19 @@ export default {
     orientation: "portrait",
     icon: "./assets/icon.png",
     userInterfaceStyle: "light",
-    splash: {
-      image: "./assets/splash.png",
-      resizeMode: "contain",
-      backgroundColor: "#ffffff"
-    },
     assetBundlePatterns: ["**/*"],
-    plugins: ["../app.plugin.js"],
+    plugins: ["../app.plugin.js",  [
+        "expo-splash-screen",
+        {
+          "backgroundColor": "#232323",
+          "image": "./assets/icon.png",
+          "dark": {
+            "image": "./assets/icon.png",
+            "backgroundColor": "#000000"
+          },
+          "imageWidth": 200
+        }
+      ]],
     ios: {
       supportsTablet: true,
       bundleIdentifier: Configs.AppBundleID,
