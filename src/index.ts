@@ -1,9 +1,7 @@
 import {
-  NativeModulesProxy,
-  EventEmitter,
-  Subscription,
   Platform,
 } from "expo-modules-core";
+import type { EventSubscription } from "expo-modules-core/build/ts-declarations/EventEmitter";
 // Import the native module. On web, it will be resolved to MoyasarApplePay.web.ts
 // and on native platforms to MoyasarApplePay.ts
 import ApplePayButton from "./ApplePayButton";
@@ -14,32 +12,16 @@ import {
 } from "./MoyasarApplePay.types";
 import MoyasarApplePayModule from "./MoyasarApplePayModule";
 
-const emitter = new EventEmitter(
-  MoyasarApplePayModule ?? NativeModulesProxy.MoyasarApplePay
-);
-
-export function onApplePayModalStatusChanged(
-  listener: (event: onApplePayModalStatusChangedPayload) => void
-): Subscription {
-  return emitter.addListener<onApplePayModalStatusChangedPayload>(
-    "onApplePayModalStatusChanged",
-    listener
-  );
+export function onApplePayModalStatusChanged(listener: (event: onApplePayModalStatusChangedPayload) => void): EventSubscription {
+  return MoyasarApplePayModule.addListener('onApplePayModalStatusChanged', listener);
 }
 
-export function onApplePayCompleted(
-  listener: (event: OnApplePayCompletedPayload) => void
-): Subscription {
-  return emitter.addListener<OnApplePayCompletedPayload>(
-    "onApplePayCompleted",
-    listener
-  );
+export function onApplePayCompleted(listener: (event: OnApplePayCompletedPayload) => void): EventSubscription {
+  return MoyasarApplePayModule.addListener('onApplePayCompleted', listener);
 }
 
-export function onApplePayButtonClicked(
-  listener: (event: void) => void
-): Subscription {
-  return emitter.addListener<void>("OnApplePayButtonClicked", listener);
+export function onApplePayButtonClicked(listener: (event) => void): EventSubscription {
+  return MoyasarApplePayModule.addListener('OnApplePayButtonClicked', listener);
 }
 
 export async function initiateApplePayPayment(
