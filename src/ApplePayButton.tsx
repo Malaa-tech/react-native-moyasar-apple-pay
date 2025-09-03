@@ -12,6 +12,7 @@ import {
 } from "./MoyasarApplePay.types";
 
 const ApplePayButton = (props: ApplePayButtonProps) => {
+  'use no memo'
   const onClickCallback = useCallback(() => {
     if (props.onPress) {
       props.onPress();
