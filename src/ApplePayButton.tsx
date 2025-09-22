@@ -5,7 +5,7 @@ import {
   onApplePayCompleted,
   onApplePayButtonClicked,
   initiateApplePayPayment,
-} from ".";
+} from "./ApplePayEvents";
 import MoyasarApplePayView from "./ApplePayButtonExpoView";
 import {
   ApplePayButtonProps,
