@@ -12,7 +12,6 @@ import {
 } from "./MoyasarApplePay.types";
 
 const ApplePayButton = (props: ApplePayButtonProps) => {
-  'use no memo'
   const onClickCallback = useCallback(() => {
     if (props.onPress) {
       props.onPress();
@@ -59,7 +58,7 @@ const ApplePayButton = (props: ApplePayButtonProps) => {
       completedListener.remove();
       buttonClicked.remove();
     };
-  }, []);
+  }, [props.onPress]);
 
   const getWidthAndHeight: () => { width: number; height: number } = () => {
     let localWidth, localHeight;
