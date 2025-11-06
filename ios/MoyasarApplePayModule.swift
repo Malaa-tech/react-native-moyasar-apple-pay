@@ -104,7 +104,7 @@ public class MoyasarApplePayModule: Module {
         var summaryItems: [PKPaymentSummaryItem] = []
         
         for summaryItem in applePayOptions.summaryItems {
-            let item = PKPaymentSummaryItem(label: summaryItem.itemTitle, amount: NSDecimalNumber(value: Float(summaryItem.itemAmount) / 100.0))
+            let item = PKPaymentSummaryItem(label: summaryItem.itemTitle, amount: NSDecimalNumber(value: Double(summaryItem.itemAmount) / 100.0))
             summaryItems.append(item)
         }
 
