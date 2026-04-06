@@ -11,17 +11,20 @@
   },
   "dependencies": {
     "babel-plugin-module-resolver": "^5.0.2",
-    "expo": "^52.0.11",
-    "expo-dev-client": "~5.0.4",
-    "expo-splash-screen": "~0.29.13",
-    "expo-status-bar": "~2.0.0",
-    "react": "18.3.1",
-    "react-native": "0.76.3"
+    "expo": "~55.0.11",
+    "expo-dev-client": "~55.0.22",
+    "expo-splash-screen": "~55.0.15",
+    "expo-status-bar": "~55.0.5",
+    "react": "19.2.0",
+    "react-native": "0.83.4",
+    "string-width": "4.2.3",
+    "strip-ansi": "6.0.1",
+    "wrap-ansi": "7.0.0"
   },
   "devDependencies": {
     "@babel/core": "^7.24.0",
-    "@types/react": "~18.3.12",
-    "typescript": "~5.3.3"
+    "@types/react": "~19.2.10",
+    "typescript": "~5.9.2"
   },
   "private": true,
   "expo": {
