@@ -11,11 +11,11 @@ buildscript {
     apply from: expoModulesCorePlugin
     applyKotlinExpoModulesCorePlugin()
   }
-
+  // Simple helper that allows the root project to override versions declared by this library.
   ext.safeExtGet = { prop, fallback ->
     rootProject.ext.has(prop) ? rootProject.ext.get(prop) : fallback
   }
-
+  // Ensures backward compatibility
   ext.getKotlinVersion = {
     if (ext.has("kotlinVersion")) {
       ext.kotlinVersion()
