@@ -10,6 +10,7 @@ import MoyasarApplePayView from "./ApplePayButtonExpoView";
 import {
   ApplePayButtonProps,
 } from "./MoyasarApplePay.types";
+import { Platform } from "react-native";
 
 const ApplePayButton = (props: ApplePayButtonProps) => {
   const onClickCallback = useCallback(() => {
@@ -37,6 +38,9 @@ const ApplePayButton = (props: ApplePayButtonProps) => {
   }, [props]);
 
   useEffect(() => {
+    if (Platform.OS !== "ios") {
+      return; // if not ios, don't listen to events
+    }
     const closedListener = onApplePayModalStatusChanged((payload) => {
       if (props.onApplePayModalStatusChanged) {
         props.onApplePayModalStatusChanged(payload);
@@ -59,6 +63,10 @@ const ApplePayButton = (props: ApplePayButtonProps) => {
       buttonClicked.remove();
     };
   }, [props.onPress]);
+
+  if (Platform.OS !== "ios") {
+    return null;
+  }
 
   const getWidthAndHeight: () => { width: number; height: number } = () => {
     let localWidth, localHeight;

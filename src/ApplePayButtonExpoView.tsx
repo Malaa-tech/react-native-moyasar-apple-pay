@@ -1,30 +1,43 @@
 import { requireNativeViewManager } from "expo-modules-core";
 import * as React from "react";
-// @ts-ignore
-import { ViewProps } from "react-native";
+import { Platform, ViewProps } from "react-native";
 
 import { ApplePayButtonExpoViewProps } from "./MoyasarApplePay.types";
 
-const NativeView: React.ComponentType<
-  { options: ApplePayButtonExpoViewProps } & ViewProps
-> = requireNativeViewManager("MoyasarApplePay");
+type NativeViewProps = { options: ApplePayButtonExpoViewProps } & ViewProps;
+
+let NativeView: React.ComponentType<NativeViewProps> | null = null;
+
+function getNativeView(): React.ComponentType<NativeViewProps> | null {
+	if (Platform.OS !== "ios") {
+		return null;
+	}
+	if (!NativeView) {
+		NativeView = requireNativeViewManager("MoyasarApplePay");
+	}
+	return NativeView;
+}
 
 export default function MoyasarApplePayView(
-  props: ApplePayButtonExpoViewProps & { width: number; height: number }
+	props: ApplePayButtonExpoViewProps & { width: number; height: number },
 ) {
-  return (
-    <NativeView
-      options={{
-        buttonType: props.buttonType,
-        buttonStyle: props.buttonStyle,
-        radius: props.radius,
-        isLoading: props.isLoading,
-        isDisabled: props.isDisabled,
-      }}
-      style={{
-        height: props.height,
-        width: props.width,
-      }}
-    />
-  );
+	const ViewComponent = getNativeView();
+	if (!ViewComponent) {
+		return null;
+	}
+	return (
+		<ViewComponent
+			options={{
+				buttonType: props.buttonType,
+				buttonStyle: props.buttonStyle,
+				radius: props.radius,
+				isLoading: props.isLoading,
+				isDisabled: props.isDisabled,
+			}}
+			style={{
+				height: props.height,
+				width: props.width,
+			}}
+		/>
+	);
 }
