@@ -4,6 +4,15 @@
   "description": "iOS native apple pay implementation & integration with Moyasar SDK",
   "main": "build/index.js",
   "types": "build/index.d.ts",
+  "react-native": "src/index.ts",
+  "source": "src/index.ts",
+  "files": [
+    "build",
+    "src",
+    "ios",
+    "app.plugin.js",
+    "expo-module.config.json"
+  ],
   "scripts": {
     "build": "node ./node_modules/expo-module-scripts/bin/expo-module.js build",
     "clean": "node ./node_modules/expo-module-scripts/bin/expo-module.js clean",
