@@ -4,9 +4,28 @@ export type onApplePayModalStatusChangedPayload = {
 
 export type OnApplePayCompletedPayload = {
   status: "paid" | "failed" | "error";
-  source: "moyasar" | "local";
+  source: "moyasar" | "local" | "token";
   moyasarPaymentID: string;
   amount: number;
+  errorDescription?: string;
+};
+
+export type ApplePayPaymentMode = "moyasar" | "token";
+
+export type OnApplePayTokenReceivedPayload = {
+  paymentData: Record<string, unknown>;
+  paymentDataBase64: string;
+  transactionIdentifier: string;
+  paymentMethod: {
+    displayName: string;
+    network: string;
+    type: "debit" | "credit" | "prepaid" | "store" | "eMoney" | "unknown";
+  };
+  amount: number;
+};
+
+export type CompleteApplePayAuthorizationOptions = {
+  success: boolean;
   errorDescription?: string;
 };
 
@@ -21,7 +40,8 @@ export type MetaDataItem = {
 };
 
 export type ApplePayOptions = {
-  moyasarPublicKey: string;
+  moyasarPublicKey?: string;
+  paymentMode?: ApplePayPaymentMode;
   amount: number;
   description?: string;
   currency?: string;
@@ -61,6 +81,7 @@ type ApplePayButtonBaseProps = ApplePayButtonExpoViewProps & {
     event: onApplePayModalStatusChangedPayload
   ) => void;
   onApplePayCompleted?: (event: OnApplePayCompletedPayload) => void;
+  onApplePayTokenReceived?: (event: OnApplePayTokenReceivedPayload) => void;
   width?: number | string;
   height?: number | string;
 };

@@ -1,8 +1,9 @@
 import { requireNativeViewManager } from "expo-modules-core";
-import * as React from "react";
-import { Platform, ViewProps } from "react-native";
+import type * as React from "react";
+import type { DimensionValue, ViewProps } from "react-native";
+import { Platform } from "react-native";
 
-import { ApplePayButtonExpoViewProps } from "./MoyasarApplePay.types";
+import type { ApplePayButtonExpoViewProps } from "./MoyasarApplePay.types";
 
 type NativeViewProps = { options: ApplePayButtonExpoViewProps } & ViewProps;
 
@@ -19,7 +20,10 @@ function getNativeView(): React.ComponentType<NativeViewProps> | null {
 }
 
 export default function MoyasarApplePayView(
-	props: ApplePayButtonExpoViewProps & { width: number; height: number },
+	props: ApplePayButtonExpoViewProps & {
+		width: number | string;
+		height: number | string;
+	},
 ) {
 	const ViewComponent = getNativeView();
 	if (!ViewComponent) {
@@ -35,8 +39,8 @@ export default function MoyasarApplePayView(
 				isDisabled: props.isDisabled,
 			}}
 			style={{
-				height: props.height,
-				width: props.width,
+				height: props.height as DimensionValue,
+				width: props.width as DimensionValue,
 			}}
 		/>
 	);

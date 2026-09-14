@@ -3,11 +3,12 @@ import React, { useCallback, useEffect } from "react";
 import {
   onApplePayModalStatusChanged,
   onApplePayCompleted,
+  onApplePayTokenReceived,
   onApplePayButtonClicked,
   initiateApplePayPayment,
 } from "./ApplePayEvents";
 import MoyasarApplePayView from "./ApplePayButtonExpoView";
-import {
+import type {
   ApplePayButtonProps,
 } from "./MoyasarApplePay.types";
 import { Platform } from "react-native";
@@ -19,6 +20,7 @@ const ApplePayButton = (props: ApplePayButtonProps) => {
     } else {
       initiateApplePayPayment({
         amount: props.amount,
+        paymentMode: props.paymentMode,
         currency: props.currency,
         merchantIdentifier: props.merchantIdentifier,
         moyasarPublicKey: props.moyasarPublicKey,
@@ -37,6 +39,7 @@ const ApplePayButton = (props: ApplePayButtonProps) => {
     }
   }, [props]);
 
+  // biome-ignore lint/correctness/useExhaustiveDependencies: <explanation>
   useEffect(() => {
     if (Platform.OS !== "ios") {
       return; // if not ios, don't listen to events
@@ -53,6 +56,10 @@ const ApplePayButton = (props: ApplePayButtonProps) => {
       }
     });
 
+    const tokenListener = onApplePayTokenReceived((payload) => {
+      props.onApplePayTokenReceived?.(payload);
+    });
+
     const buttonClicked = onApplePayButtonClicked(() => {
       onClickCallback();
     });
@@ -60,6 +67,7 @@ const ApplePayButton = (props: ApplePayButtonProps) => {
     return () => {
       closedListener.remove();
       completedListener.remove();
+      tokenListener.remove();
       buttonClicked.remove();
     };
   }, [props.onPress]);
@@ -68,8 +76,12 @@ const ApplePayButton = (props: ApplePayButtonProps) => {
     return null;
   }
 
-  const getWidthAndHeight: () => { width: number; height: number } = () => {
-    let localWidth, localHeight;
+  const getWidthAndHeight: () => {
+    width: number | string;
+    height: number | string;
+  } = () => {
+    let localWidth: number | string;
+    let localHeight: number | string;
 
     if (!props.width) {
       localWidth = 350;

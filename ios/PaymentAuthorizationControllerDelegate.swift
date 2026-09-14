@@ -13,13 +13,22 @@ class PaymentAuthorizationControllerDelegate: NSObject, PKPaymentAuthorizationVi
     var moyasarApplePayModule: MoyasarApplePayModule!
     let encoder = JSONEncoder()
     let decoder = JSONDecoder()
+    private var pendingCompletion: ((PKPaymentAuthorizationResult) -> Void)?
     
     func paymentAuthorizationViewControllerDidFinish(_ controller: PKPaymentAuthorizationViewController) {
+        // Sheet dismissed (cancel/timeout) while JS still owned the result; Apple requires the handler to be called.
+        pendingCompletion?(PKPaymentAuthorizationResult(status: .failure, errors: nil))
+        pendingCompletion = nil
         controller.dismiss(animated: true, completion: nil)
         moyasarApplePayModule.onApplePayModalStatusChanged(applePayModalStatus: .close)
     }
     
     func paymentAuthorizationViewController(_ controller: PKPaymentAuthorizationViewController, didAuthorizePayment payment: PKPayment, handler completion: @escaping (PKPaymentAuthorizationResult) -> Void) {
+        if moyasarApplePayModule.applePayOptions.paymentMode == .token {
+            handleTokenMode(payment: payment, completion: completion)
+            return
+        }
+        
         do {
             let moyasarPaymentRequest = try PaymentRequest(
                 apiKey: self.moyasarApplePayModule.applePayOptions.moyasarPublicKey,
@@ -63,6 +72,52 @@ class PaymentAuthorizationControllerDelegate: NSObject, PKPaymentAuthorizationVi
             }
         } catch {
             self.closePaymentWithError(errorCode: 404, errorDomain: "PaymentError.moyasar", localizedDescription: "could not verify payment form moyasar \(error)", handler: completion)
+        }
+    }
+    
+    private func handleTokenMode(payment: PKPayment, completion: @escaping (PKPaymentAuthorizationResult) -> Void) {
+        let token = payment.token
+        let paymentData = (try? JSONSerialization.jsonObject(with: token.paymentData)) ?? [String: Any]()
+        
+        pendingCompletion = completion
+        moyasarApplePayModule.onApplePayTokenReceived([
+            "paymentData": paymentData,
+            "paymentDataBase64": token.paymentData.base64EncodedString(),
+            "transactionIdentifier": token.transactionIdentifier,
+            "paymentMethod": [
+                "displayName": token.paymentMethod.displayName ?? "",
+                "network": token.paymentMethod.network?.rawValue ?? "",
+                "type": paymentMethodTypeString(token.paymentMethod.type)
+            ],
+            "amount": moyasarApplePayModule.applePayOptions.amount
+        ])
+    }
+    
+    func completeAuthorization(options: CompleteAuthorizationOptions) throws {
+        guard let completion = pendingCompletion else {
+            throw CustomError("No pending Apple Pay authorization to complete")
+        }
+        pendingCompletion = nil
+        let amount = moyasarApplePayModule.applePayOptions.amount
+        
+        if options.success {
+            moyasarApplePayModule.onApplePayCompleted(applePayPaymentStatus: ApplePayPaymentStatus(paymentStatus: "paid", amount: amount, source: .token))
+            completion(PKPaymentAuthorizationResult(status: .success, errors: nil))
+        } else {
+            let description = options.errorDescription.isEmpty ? "payment failed" : options.errorDescription
+            moyasarApplePayModule.onApplePayCompleted(applePayPaymentStatus: ApplePayPaymentStatus(paymentStatus: "failed", amount: amount, source: .token, errorDescription: description))
+            closePaymentWithError(errorCode: 400, errorDomain: "PaymentError.token", localizedDescription: description, handler: completion, sendEvent: false)
+        }
+    }
+    
+    private func paymentMethodTypeString(_ type: PKPaymentMethodType) -> String {
+        switch type {
+        case .debit: return "debit"
+        case .credit: return "credit"
+        case .prepaid: return "prepaid"
+        case .store: return "store"
+        case .eMoney: return "eMoney"
+        default: return "unknown"
         }
     }
     

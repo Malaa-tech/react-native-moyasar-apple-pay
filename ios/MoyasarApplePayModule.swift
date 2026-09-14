@@ -15,14 +15,14 @@ public class MoyasarApplePayModule: Module {
     
     public func definition() -> ModuleDefinition {
         Name("MoyasarApplePay")
-        Events("onApplePayModalStatusChanged", "onApplePayCompleted", "OnApplePayButtonClicked")
+        Events("onApplePayModalStatusChanged", "onApplePayCompleted", "OnApplePayButtonClicked", "onApplePayTokenReceived")
         
         AsyncFunction("initiateApplePayPayment") { (applePayOptions: ApplePayOptions) -> Void in
-            do {
-                try initiatePayment(applePayOptions: applePayOptions)
-            } catch {
-                throw error
-            }
+            try initiatePayment(applePayOptions: applePayOptions)
+        }
+        
+        AsyncFunction("completeApplePayAuthorization") { (options: CompleteAuthorizationOptions) -> Void in
+            try paymentAuthorizationControllerDelegate.completeAuthorization(options: options)
         }
         
         AsyncFunction("canMakePayments") {
@@ -56,7 +56,14 @@ public class MoyasarApplePayModule: Module {
         self.sendEvent("onApplePayCompleted", applePayPaymentStatus.toParsable())
     }
     
+    func onApplePayTokenReceived(_ payload: [String: Any]) {
+        self.sendEvent("onApplePayTokenReceived", payload)
+    }
+    
     func initiatePayment(applePayOptions: ApplePayOptions) throws {
+        if applePayOptions.paymentMode == .moyasar && applePayOptions.moyasarPublicKey.isEmpty {
+            throw CustomError("moyasarPublicKey is required when paymentMode is 'moyasar'")
+        }
         self.applePayOptions = applePayOptions
        
         do {

@@ -1,8 +1,10 @@
 import type { EventSubscription } from "expo-modules-core/build/ts-declarations/EventEmitter";
 import { Platform } from "expo-modules-core";
-import {
+import type {
 	onApplePayModalStatusChangedPayload,
 	OnApplePayCompletedPayload,
+	OnApplePayTokenReceivedPayload,
+	CompleteApplePayAuthorizationOptions,
 	ApplePayOptions,
 } from "./MoyasarApplePay.types";
 import MoyasarApplePayModule from "./MoyasarApplePayModule";
@@ -35,6 +37,27 @@ export function onApplePayCompleted(
 		return noopSubscription;
 	}
 	return MoyasarApplePayModule.addListener("onApplePayCompleted", listener);
+}
+
+export function onApplePayTokenReceived(
+	listener: (event: OnApplePayTokenReceivedPayload) => void,
+): EventSubscription {
+	if (!isIosModuleAvailable()) {
+		return noopSubscription;
+	}
+	return MoyasarApplePayModule.addListener("onApplePayTokenReceived", listener);
+}
+
+export async function completeApplePayAuthorization(
+	options: CompleteApplePayAuthorizationOptions,
+): Promise<void> {
+	if (!isIosModuleAvailable()) {
+		throw new Error(IOS_ONLY_ERROR);
+	}
+	return MoyasarApplePayModule.completeApplePayAuthorization({
+		success: options.success,
+		errorDescription: options.errorDescription ?? "",
+	});
 }
 
 export function onApplePayButtonClicked(

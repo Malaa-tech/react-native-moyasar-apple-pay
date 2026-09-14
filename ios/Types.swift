@@ -36,6 +36,20 @@ enum ApplePayModalStatus: String {
 enum ApplePayPaymentStatusSource: String {
     case moyasar
     case local
+    case token
+}
+
+enum ApplePayPaymentMode: String, Enumerable {
+    case moyasar
+    case token
+}
+
+struct CompleteAuthorizationOptions: Record {
+    @Field
+    var success: Bool = false
+
+    @Field
+    var errorDescription: String = ""
 }
 
 struct ApplePayPaymentStatus {
@@ -82,7 +96,10 @@ struct MoyasarMetaData: Record {
 
 struct ApplePayOptions: Record {
     @Field
-    var moyasarPublicKey: String
+    var moyasarPublicKey: String = ""
+
+    @Field
+    var paymentMode: ApplePayPaymentMode = .moyasar
 
     @Field
     var amount: Int

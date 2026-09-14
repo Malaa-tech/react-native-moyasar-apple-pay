@@ -151,6 +151,37 @@ useEffect(() => {
 }, []);
 ```
 
+### (Option 3) Token mode -> let your backend make the payment
+
+Pass `paymentMode: "token"` (no `moyasarPublicKey` needed). Instead of charging Moyasar, the package emits the raw Apple Pay token through `onApplePayTokenReceived` and keeps the Apple Pay sheet open until you call `completeApplePayAuthorization`. Send the token to your backend, let it create the payment, then report the result. Apple closes the sheet with a failure if you take longer than ~30 seconds.
+
+```ts
+import * as MoyasarApplePay from "moyasar-apple-pay";
+
+<MoyasarApplePay.ApplePayButton
+  paymentMode="token"
+  amount={amount}
+  merchantIdentifier={Merchant}
+  summaryItems={[{ itemAmount: amount, itemTitle: "Total" }]}
+  onApplePayTokenReceived={async (token) => {
+    try {
+      await api.chargeApplePay({ paymentId, token }); // token.paymentData is what Moyasar/your PSP expects
+      await MoyasarApplePay.completeApplePayAuthorization({ success: true });
+    } catch (e) {
+      await MoyasarApplePay.completeApplePayAuthorization({
+        success: false,
+        errorDescription: "Payment failed",
+      });
+    }
+  }}
+  onApplePayCompleted={(payload) => {
+    // payload.source === "token", payload.status is "paid" or "failed"
+  }}
+/>
+```
+
+The same works with `initiateApplePayPayment({ paymentMode: "token", ... })` plus the `onApplePayTokenReceived` listener.
+
 if you would like to know if payments are supported or not on the device, you can use `canMakePayments()` function
 
 ```ts
